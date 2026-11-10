@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: "configserver"
+  profiles:
+    active: native          # use "git" to read the configuration from GitHub (see the "git" section below)
+  cloud:
+    config:
+      server:
+        native:
+          # 1) configuration read from a folder of the classpath (src/main/resources/config)
+          # search-locations: "classpath:/config"
+          # 2) configuration read from the file system: the config-repo folder at the root of the project
+          search-locations: "file:../config-repo/,file:./config-repo/"
+server:
+  port: 9999
+
+---
+# 3) configuration read from GitHub: start with SPRING_PROFILES_ACTIVE=git
+spring:
+  config:
+    activate:
+      on-profile: git
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/YOUR_GITHUB_USERNAME/config-repo.git
+          default-label: main
+          clone-on-start: true
